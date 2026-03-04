@@ -36,10 +36,52 @@
                 </div>
 
                 <div class="setup-section">
-                    <h3>Number of Teams</h3>
-                    <input type="number" id="team-count" min="2" max="10" value="3" class="input-field">
-                    <button class="btn btn-primary" onclick="setupTeams()">Next</button>
+                    <h3>Team Setup Method</h3>
+                    <button class="btn btn-secondary" onclick="setupTeams()">Add Teams Manually</button>
+                    <button class="btn btn-secondary" onclick="showAddPlayersScreen()">Add Players & Randomize</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Add Players Screen -->
+        <div class="screen" id="add-players-screen">
+            <div class="glass-card">
+                <h2>Add Players</h2>
+                <div class="setup-section">
+                    <div style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                        <input type="text" id="player-name-input-main" class="input-field" placeholder="Player name" style="max-width: 300px;">
+                        <button class="btn btn-secondary" onclick="addPlayerToList()">+ Add</button>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <h4 style="color: #333; margin-bottom: 10px;">Bulk Add Players</h4>
+                        <textarea id="bulk-players-input" class="input-field" placeholder="Enter multiple names separated by commas or new lines&#10;Example: John, Jane, Bob&#10;or one name per line" style="min-height: 80px; max-width: 500px;"></textarea>
+                        <button class="btn btn-secondary" onclick="addBulkPlayers()">Add All</button>
+                    </div>
+                    
+                    <div id="all-players-list" class="players-list"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <p id="player-count" style="color: #333; margin: 0;">0 players added</p>
+                        <button class="btn btn-ghost" onclick="clearAllPlayers()" style="font-size: 0.9rem; padding: 8px 15px;">Clear All</button>
+                    </div>
+                </div>
+                
+                <div class="setup-section">
+                    <h3>Number of Teams</h3>
+                    <input type="number" id="random-team-count" min="2" max="10" value="3" class="input-field">
+                    <button class="btn btn-primary" onclick="randomizeTeams()">Randomize Teams</button>
+                    <button class="btn btn-ghost" onclick="showScreen('setup-screen')">Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Random Teams Setup Screen -->
+        <div class="screen" id="random-teams-screen">
+            <div class="glass-card">
+                <h2>Customize Teams</h2>
+                <div id="random-teams-container"></div>
+                <button class="btn btn-primary" onclick="finishRandomTeams()">Start Game</button>
+                <button class="btn btn-ghost" onclick="showScreen('add-players-screen')">Back</button>
             </div>
         </div>
 
@@ -89,6 +131,16 @@
                 <h2 id="question-text" class="question-text"></h2>
                 
                 <div id="options-container" class="options-container"></div>
+                
+                <div class="game-controls">
+                    <div class="negative-marking-control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="game-negative-marking" onchange="toggleNegativeMarking()">
+                            -5 points for wrong answers
+                        </label>
+                    </div>
+                    <button class="btn btn-ghost end-game-btn" onclick="confirmEndGame()">End Game</button>
+                </div>
                 
                 <div id="answer-reveal" class="answer-reveal" style="display:none">
                     <div class="reveal-content">

@@ -249,31 +249,49 @@ body {
 }
 
 .scoreboard {
-    display: flex;
+    display: flex !important;
+    flex-direction: row !important;
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: stretch;
     margin-bottom: 30px;
-    gap: 25px;
+    gap: 15px;
     padding: 0 20px;
+    max-width: 100%;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+}
+
+#scoreboard-teams {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .score-item {
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
-    padding: 20px 30px;
+    padding: 15px 20px;
     border-radius: 15px;
     color: #333;
     text-align: center;
-    min-width: 180px;
+    flex: 1;
+    min-width: 120px;
+    max-width: 250px;
     border: 3px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .score-item.active {
-    border: 4px solid #ffd700;
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
-    transform: scale(1.08);
-    background: rgba(255, 255, 255, 0.6);
+    border: 4px solid #4caf50;
+    box-shadow: 0 0 25px rgba(76, 175, 80, 0.6);
+    transform: scale(1.05);
+    background: rgba(76, 175, 80, 0.1);
 }
 
 .score-item h4 {
@@ -349,8 +367,8 @@ body {
 }
 
 .option-btn.incorrect {
-    background: rgba(244, 67, 54, 0.5);
-    border-color: #f44336;
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(150, 150, 200, 0.4);
     animation: shake 0.5s;
 }
 
@@ -532,13 +550,118 @@ body {
     font-size: 0.9rem;
 }
 
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.negative-marking-control {
+    flex: 1;
+}
+
+.end-game-btn {
+    background: rgba(255, 107, 107, 0.2);
+    border: 2px solid rgba(255, 107, 107, 0.5);
+    color: #333;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+}
+
+.end-game-btn:hover {
+    background: rgba(255, 107, 107, 0.3);
+    border-color: rgba(255, 107, 107, 0.7);
+}
+
+.confirmation-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.confirmation-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    margin: 20px;
+}
+
+.confirmation-content h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.confirmation-content p {
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
+    .game-controls {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .negative-marking-control {
+        flex: none;
+    }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .scoreboard {
+        gap: 12px;
+    }
+    
+    .score-item {
+        padding: 12px 16px;
+        min-width: 110px;
+    }
+}
+
+@media (max-width: 480px) {
     .title {
         font-size: 2rem;
     }
     
     .options-container {
         grid-template-columns: 1fr;
+    }
+    
+    .scoreboard {
+        flex-wrap: wrap !important;
+        justify-content: center;
+    }
+    
+    .score-item {
+        min-width: 100px;
+        max-width: 150px;
+        flex: 0 1 auto;
+    }
+    
+    .score-item.active {
+        transform: scale(1.02);
     }
     
     .podium {
@@ -563,6 +686,12 @@ body {
     margin-top: 15px;
     justify-content: center;
     min-height: 40px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid rgba(150, 150, 200, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .players-list p {
@@ -614,4 +743,86 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     margin-top: 5px;
+}
+
+/* Confetti Animation */
+.confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #f0f;
+    animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Enhanced Results */
+.results-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.podium-place h3 {
+    margin: 10px 0 5px 0;
+}
+
+.team-members {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.7);
+    font-style: italic;
+    margin: 5px 0;
+    line-height: 1.3;
+}
+
+.celebration-emoji {
+    font-size: 1.5rem;
+    margin: 0 5px;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+.result-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.result-team-info {
+    flex: 1;
+    text-align: left;
+}
+
+.result-team-members {
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+    margin-top: 3px;
+}
+
+.result-score {
+    font-weight: bold;
+    font-size: 1.1rem;
 }
