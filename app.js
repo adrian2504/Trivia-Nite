@@ -570,9 +570,29 @@ function updateScoreboard() {
     
     gameState.teams.forEach((team, index) => {
         const isActive = index === gameState.currentTeamIndex;
-        const playersText = team.players.length > 0 ? `<p class="team-players">${team.players.join(', ')}</p>` : '';
+        
+        // Format player names with smart truncation
+        let playersText = '';
+        let fullPlayersList = '';
+        if (team.players && team.players.length > 0) {
+            const maxPlayersToShow = 4; // Show max 4 names before truncating
+            const displayPlayers = team.players.slice(0, maxPlayersToShow);
+            const remainingCount = team.players.length - maxPlayersToShow;
+            
+            let playersList = displayPlayers.join(', ');
+            if (remainingCount > 0) {
+                playersList += `, +${remainingCount} more`;
+            }
+            
+            playersText = `<p class="team-players">${playersList}</p>`;
+            fullPlayersList = team.players.join(', '); // Full list for tooltip
+        }
+        
         const scoreHTML = `
-            <div class="score-item ${isActive ? 'active' : ''}" style="border-color: ${team.color}">
+            <div class="score-item ${isActive ? 'active' : ''}" 
+                 style="border-color: ${team.color}" 
+                 onmouseenter="showTeamTooltip(event, '${fullPlayersList.replace(/'/g, "&#39;")}')"
+                 onmouseleave="hideTeamTooltip()">
                 <h4>${team.name}</h4>
                 ${playersText}
                 <p class="team-score">${team.score}</p>
@@ -580,6 +600,35 @@ function updateScoreboard() {
         `;
         container.insertAdjacentHTML('beforeend', scoreHTML);
     });
+}
+
+function showTeamTooltip(event, playersList) {
+    if (!playersList) return;
+    
+    // Remove existing tooltip
+    hideTeamTooltip();
+    
+    const tooltip = document.createElement('div');
+    tooltip.id = 'team-tooltip';
+    tooltip.className = 'team-tooltip';
+    tooltip.innerHTML = `<strong>All Team Members:</strong><br>${playersList}`;
+    
+    document.body.appendChild(tooltip);
+    
+    // Position tooltip
+    const rect = event.target.getBoundingClientRect();
+    tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+    tooltip.style.top = rect.bottom + 10 + 'px';
+    
+    // Show tooltip
+    setTimeout(() => tooltip.classList.add('show'), 10);
+}
+
+function hideTeamTooltip() {
+    const tooltip = document.getElementById('team-tooltip');
+    if (tooltip) {
+        tooltip.remove();
+    }
 }
 
 function displayQuestion() {
