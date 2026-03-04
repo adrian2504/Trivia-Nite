@@ -13,7 +13,7 @@
         <!-- Welcome Screen -->
         <div class="screen active" id="welcome-screen">
             <div class="glass-card welcome-card">
-                <h1 class="title">🎮 Trivia Game Night 🎉</h1>
+                <h1 class="title">Trivia Game Night</h1>
                 <p class="subtitle">Get ready for some brain-busting fun!</p>
                 <button class="btn btn-primary" onclick="showScreen('setup-screen')">Start New Game</button>
                 <div class="footer">Designed by Adrian Dsouza</div>
@@ -23,7 +23,7 @@
         <!-- Setup Screen -->
         <div class="screen" id="setup-screen">
             <div class="glass-card">
-                <h2>📝 Game Setup</h2>
+                <h2>Game Setup</h2>
                 <div class="setup-section">
                     <h3>Questions</h3>
                     <button class="btn btn-secondary" onclick="showCreateQuestions()">Create Questions</button>
@@ -32,7 +32,7 @@
                 </div>
                 
                 <div class="setup-section" id="questions-preview" style="display:none">
-                    <p><span id="question-count">0</span> questions loaded ✅</p>
+                    <p><span id="question-count">0</span> questions loaded</p>
                 </div>
 
                 <div class="setup-section">
@@ -46,7 +46,7 @@
         <!-- Create Questions Screen -->
         <div class="screen" id="create-questions-screen">
             <div class="glass-card">
-                <h2>✏️ Create Questions</h2>
+                <h2>Create Questions</h2>
                 <div id="questions-container"></div>
                 <button class="btn btn-secondary" onclick="addQuestionForm()">+ Add Question</button>
                 <button class="btn btn-primary" onclick="saveQuestions()">Save Questions</button>
@@ -57,19 +57,19 @@
         <!-- Team Setup Screen -->
         <div class="screen" id="team-setup-screen">
             <div class="glass-card">
-                <h2>👥 Team Setup</h2>
+                <h2>Team Setup</h2>
                 <div id="teams-container"></div>
                 
                 <div class="setup-section">
-                    <h3>⚙️ Game Settings</h3>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="negative-marking">
-                        Enable Negative Marking
-                    </label>
+                    <h3>Game Settings</h3>
                     <div class="point-system">
                         <label>Points per correct answer:</label>
                         <input type="number" id="points-per-question" value="10" min="1" class="input-field">
                     </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="negative-marking">
+                        Enable Negative Marking (-5 points for wrong answer)
+                    </label>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
         <!-- Results Screen -->
         <div class="screen" id="results-screen">
             <div class="glass-card results-card">
-                <h1>🏆 Final Results 🏆</h1>
+                <h1>Final Results</h1>
                 <div id="podium" class="podium"></div>
                 <div id="all-results" class="all-results"></div>
                 <button class="btn btn-primary" onclick="location.reload()">Play Again</button>

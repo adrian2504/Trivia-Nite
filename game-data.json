@@ -41,7 +41,7 @@
       "correctAnswer": 2
     },
     {
-      "question": "Which animal is known as the 'King of the Jungle'?",
+      "question": "Which animal is known as the King of the Jungle?",
       "options": ["Tiger", "Elephant", "Lion", "Gorilla"],
       "correctAnswer": 2
     },
@@ -49,6 +49,56 @@
       "question": "What is the chemical symbol for gold?",
       "options": ["Go", "Gd", "Au", "Ag"],
       "correctAnswer": 2
+    },
+    {
+      "question": "In which year did the Titanic sink?",
+      "options": ["1910", "1912", "1914", "1916"],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What is the speed of light?",
+      "options": ["300,000 km/s", "150,000 km/s", "450,000 km/s", "600,000 km/s"],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Who wrote Romeo and Juliet?",
+      "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"],
+      "correctAnswer": 2
+    },
+    {
+      "question": "How many bones are in the human body?",
+      "options": ["186", "206", "226", "246"],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What is the capital of Japan?",
+      "options": ["Seoul", "Beijing", "Tokyo", "Bangkok"],
+      "correctAnswer": 2
+    },
+    {
+      "question": "Which gas do plants absorb from the atmosphere?",
+      "options": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+      "correctAnswer": 2
+    },
+    {
+      "question": "What is the square root of 144?",
+      "options": ["10", "11", "12", "13"],
+      "correctAnswer": 2
+    },
+    {
+      "question": "Who invented the telephone?",
+      "options": ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Benjamin Franklin"],
+      "correctAnswer": 1
+    },
+    {
+      "question": "What is the largest mammal in the world?",
+      "options": ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+      "correctAnswer": 1
     }
   ]
 }

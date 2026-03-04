@@ -7,53 +7,53 @@ let gameState = {
     pointsPerQuestion: 10,
     negativeMarking: false,
     selectedAnswer: null,
-    wrongAttempts: 0,
-    attemptedAnswers: []
+    questionWrongAttempts: 0,
+    teamsAttemptedThisQuestion: []
 };
 
 // Funny messages
 const funnyMessages = [
-    "🧠 Brain cells activated!",
-    "🤔 Thinking caps on!",
-    "🎯 Let's see if you're smarter than a 5th grader!",
-    "🚀 To infinity and beyond... or just the next question!",
-    "🎪 The circus is in town and it's quiz time!",
-    "🦸 Time to unleash your inner genius!",
-    "🎲 May the odds be ever in your favor!",
-    "🌟 Shine bright like a diamond... or at least try!",
-    "🎭 Drama! Suspense! Trivia!",
-    "🔥 Things are heating up!",
-    "💡 Lightbulb moment incoming!",
-    "🎉 Party time! But make it educational!",
-    "🦄 Believe in yourself like you believe in unicorns!",
-    "🍕 This question is cheesier than pizza!",
-    "🎸 Rock on, quiz master!"
+    "Brain cells activated!",
+    "Thinking caps on!",
+    "Let's see if you're smarter than a 5th grader!",
+    "To infinity and beyond... or just the next question!",
+    "The circus is in town and it's quiz time!",
+    "Time to unleash your inner genius!",
+    "May the odds be ever in your favor!",
+    "Shine bright like a diamond... or at least try!",
+    "Drama! Suspense! Trivia!",
+    "Things are heating up!",
+    "Lightbulb moment incoming!",
+    "Party time! But make it educational!",
+    "Believe in yourself like you believe in unicorns!",
+    "This question is cheesier than pizza!",
+    "Rock on, quiz master!"
 ];
 
 const wrongAnswerMessages = [
-    "😅 Oops! Better luck next time!",
-    "🙈 So close, yet so far!",
-    "🤦 That's not it, chief!",
-    "💔 Wrong answer, but we still love you!",
-    "🎪 Nice try, but no cigar!",
-    "🌈 Every mistake is a rainbow to success!",
-    "🦖 Even dinosaurs got things wrong sometimes!",
-    "🎯 Missed the target, but great effort!",
-    "🍌 Oops! You slipped on that one!",
-    "🎨 Creative answer, but not quite right!"
+    "Oops! Better luck next time!",
+    "So close, yet so far!",
+    "That's not it, chief!",
+    "Wrong answer, but we still love you!",
+    "Nice try, but no cigar!",
+    "Every mistake is a rainbow to success!",
+    "Even dinosaurs got things wrong sometimes!",
+    "Missed the target, but great effort!",
+    "Oops! You slipped on that one!",
+    "Creative answer, but not quite right!"
 ];
 
 const correctAnswerMessages = [
-    "🎉 Nailed it! You're on fire!",
-    "⭐ Brilliant! Einstein would be proud!",
-    "🏆 Correct! You're a trivia champion!",
-    "💯 Perfect! Give yourself a high five!",
-    "🎊 Yes! That's the right answer!",
-    "🌟 Spectacular! You're a genius!",
-    "🚀 Boom! Correct answer!",
-    "🎯 Bullseye! Right on target!",
-    "👑 Royally correct! You rule!",
-    "🦸 Superhero answer! POW!"
+    "Nailed it! You're on fire!",
+    "Brilliant! Einstein would be proud!",
+    "Correct! You're a trivia champion!",
+    "Perfect! Give yourself a high five!",
+    "Yes! That's the right answer!",
+    "Spectacular! You're a genius!",
+    "Boom! Correct answer!",
+    "Bullseye! Right on target!",
+    "Royally correct! You rule!",
+    "Superhero answer! POW!"
 ];
 
 // Utility Functions
@@ -138,7 +138,7 @@ function saveQuestions() {
     document.getElementById('question-count').textContent = questions.length;
     document.getElementById('questions-preview').style.display = 'block';
     showScreen('setup-screen');
-    showFunnyPopup('📝 Questions saved! Ready to rumble!');
+    showFunnyPopup('Questions saved! Ready to rumble!');
 }
 
 // File Upload
@@ -154,7 +154,7 @@ function handleFileUpload(event) {
                 gameState.questions = data.questions;
                 document.getElementById('question-count').textContent = data.questions.length;
                 document.getElementById('questions-preview').style.display = 'block';
-                showFunnyPopup('📁 File loaded successfully!');
+                showFunnyPopup('File loaded successfully!');
             } else {
                 alert('Invalid file format. Please check the JSON structure.');
             }
@@ -210,7 +210,7 @@ function displayTeamSetupForm() {
             <input type="text" id="current-team-name" class="input-field" placeholder="Team Name" value="${tempTeams[currentTeamSetupIndex]?.name || 'Team ' + (currentTeamSetupIndex + 1)}" required>
             
             <div class="player-input-section">
-                <label style="color: white; display: block; margin: 15px 0 10px 0;">Add Players:</label>
+                <label style="color: #333; display: block; margin: 15px 0 10px 0;">Add Players:</label>
                 <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
                     <input type="text" id="player-name-input" class="input-field" placeholder="Player name" style="max-width: 300px;">
                     <button class="btn btn-secondary" onclick="addPlayer()" style="margin: 0;">+ Add</button>
@@ -218,12 +218,12 @@ function displayTeamSetupForm() {
                 <div id="players-list" class="players-list"></div>
             </div>
             
-            <label style="color: white; display: block; margin: 20px 0 10px 0;">Team Color:</label>
+            <label style="color: #333; display: block; margin: 20px 0 10px 0;">Team Color:</label>
             <input type="color" id="current-team-color" class="color-picker" value="${tempTeams[currentTeamSetupIndex]?.color || colors[currentTeamSetupIndex % colors.length]}">
             
             <div class="team-nav-buttons">
-                ${currentTeamSetupIndex > 0 ? '<button class="btn btn-secondary" onclick="previousTeam()">← Previous</button>' : ''}
-                ${currentTeamSetupIndex < totalTeamsToSetup - 1 ? '<button class="btn btn-primary" onclick="nextTeam()">Next →</button>' : '<button class="btn btn-primary" onclick="finishTeamSetup()">Finish Setup</button>'}
+                ${currentTeamSetupIndex > 0 ? '<button class="btn btn-secondary" onclick="previousTeam()">Previous</button>' : ''}
+                ${currentTeamSetupIndex < totalTeamsToSetup - 1 ? '<button class="btn btn-primary" onclick="nextTeam()">Next</button>' : '<button class="btn btn-primary" onclick="finishTeamSetup()">Finish Setup</button>'}
             </div>
         </div>
     `;
@@ -301,11 +301,13 @@ function finishTeamSetup() {
     gameState.negativeMarking = document.getElementById('negative-marking').checked;
     gameState.currentQuestionIndex = 0;
     gameState.currentTeamIndex = 0;
+    gameState.questionWrongAttempts = 0;
+    gameState.teamsAttemptedThisQuestion = [];
     
     showScreen('game-screen');
     updateScoreboard();
     displayQuestion();
-    showFunnyPopup('🎮 Game on! Let the battle begin!');
+    showFunnyPopup('Game on! Let the battle begin!');
 }
 
 
@@ -351,25 +353,20 @@ function displayQuestion() {
     
     document.getElementById('answer-reveal').style.display = 'none';
     gameState.selectedAnswer = null;
-    gameState.wrongAttempts = 0;
-    gameState.attemptedAnswers = [];
 }
 
 function selectAnswer(answerIndex) {
-    if (gameState.attemptedAnswers.includes(answerIndex)) return;
+    if (gameState.selectedAnswer !== null) return;
     
+    gameState.selectedAnswer = answerIndex;
     const question = gameState.questions[gameState.currentQuestionIndex];
     const isCorrect = answerIndex === question.correctAnswer;
     
-    gameState.attemptedAnswers.push(answerIndex);
-    
-    // Disable the clicked button
     const optionButtons = document.querySelectorAll('.option-btn');
-    optionButtons[answerIndex].disabled = true;
-    optionButtons[answerIndex].style.opacity = '0.5';
+    optionButtons.forEach(btn => btn.disabled = true);
     
     if (isCorrect) {
-        // Correct answer - show it and move on
+        // Correct answer - award points and move to next question
         gameState.teams[gameState.currentTeamIndex].score += gameState.pointsPerQuestion;
         showFunnyPopup(getRandomMessage(correctAnswerMessages));
         
@@ -383,60 +380,74 @@ function selectAnswer(answerIndex) {
             const revealTitle = document.getElementById('reveal-title');
             const revealText = document.getElementById('reveal-text');
             
-            revealTitle.textContent = '✅ Correct!';
+            revealTitle.textContent = 'Correct!';
             revealTitle.style.color = '#4caf50';
             revealText.textContent = `The correct answer is: ${question.options[question.correctAnswer]}`;
             document.getElementById('answer-reveal').style.display = 'block';
             
             setTimeout(() => {
-                nextQuestion();
+                moveToNextQuestion();
             }, 1500);
         }, 800);
         
     } else {
-        // Wrong answer
-        gameState.wrongAttempts++;
+        // Wrong answer - apply negative marking and move to next team
+        if (gameState.negativeMarking) {
+            gameState.teams[gameState.currentTeamIndex].score -= 5;
+        }
         
-        if (gameState.wrongAttempts >= 2) {
-            // Two wrong attempts - reveal answer and move on
-            if (gameState.negativeMarking) {
-                gameState.teams[gameState.currentTeamIndex].score -= 1;
-            }
-            showFunnyPopup(getRandomMessage(wrongAnswerMessages));
+        gameState.teamsAttemptedThisQuestion.push(gameState.currentTeamIndex);
+        gameState.questionWrongAttempts++;
+        
+        showFunnyPopup(getRandomMessage(wrongAnswerMessages));
+        
+        // Highlight correct answer
+        optionButtons[question.correctAnswer].classList.add('correct');
+        optionButtons[answerIndex].classList.add('incorrect');
+        
+        updateScoreboard();
+        
+        setTimeout(() => {
+            const revealTitle = document.getElementById('reveal-title');
+            const revealText = document.getElementById('reveal-text');
             
-            // Show correct answer
-            optionButtons[question.correctAnswer].classList.add('correct');
-            // Show wrong attempts
-            gameState.attemptedAnswers.forEach(idx => {
-                if (idx !== question.correctAnswer) {
-                    optionButtons[idx].classList.add('incorrect');
-                }
-            });
-            
-            updateScoreboard();
+            revealTitle.textContent = 'Wrong!';
+            revealTitle.style.color = '#f44336';
+            revealText.textContent = `The correct answer is: ${question.options[question.correctAnswer]}`;
+            document.getElementById('answer-reveal').style.display = 'block';
             
             setTimeout(() => {
-                const revealTitle = document.getElementById('reveal-title');
-                const revealText = document.getElementById('reveal-text');
-                
-                revealTitle.textContent = '❌ Wrong!';
-                revealTitle.style.color = '#f44336';
-                revealText.textContent = `The correct answer is: ${question.options[question.correctAnswer]}`;
-                document.getElementById('answer-reveal').style.display = 'block';
-            }, 800);
-        } else {
-            // First wrong attempt - let them try again
-            showFunnyPopup('🤔 Try again! One more chance!');
-        }
+                // Check if 2 teams have answered wrong
+                if (gameState.questionWrongAttempts >= 2) {
+                    // Move to next question with next team
+                    moveToNextQuestion();
+                } else {
+                    // Move to next team with same question
+                    moveToNextTeam();
+                }
+            }, 1500);
+        }, 800);
     }
 }
 
-function nextQuestion() {
+function moveToNextTeam() {
+    // Move to next team
     gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % gameState.teams.length;
+    gameState.selectedAnswer = null;
     
-    if (gameState.currentTeamIndex === 0) {
-        gameState.currentQuestionIndex++;
-    }
+    displayQuestion();
+    updateScoreboard();
+}
+
+function moveToNextQuestion() {
+    // Reset for new question
+    gameState.questionWrongAttempts = 0;
+    gameState.teamsAttemptedThisQuestion = [];
+    gameState.currentQuestionIndex++;
+    
+    // Move to next team
+    gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % gameState.teams.length;
+    gameState.selectedAnswer = null;
     
     if (gameState.currentQuestionIndex >= gameState.questions.length) {
         showResults();
@@ -444,6 +455,10 @@ function nextQuestion() {
         displayQuestion();
         updateScoreboard();
     }
+}
+
+function nextQuestion() {
+    moveToNextQuestion();
 }
 
 // Results
@@ -457,7 +472,7 @@ function showResults() {
     const podiumContainer = document.getElementById('podium');
     podiumContainer.innerHTML = '';
     
-    const medals = ['🥇', '🥈', '🥉'];
+    const medals = ['1st', '2nd', '3rd'];
     const places = ['first', 'second', 'third'];
     
     sortedTeams.slice(0, 3).forEach((team, index) => {
@@ -488,8 +503,8 @@ function showResults() {
         allResultsContainer.insertAdjacentHTML('beforeend', resultHTML);
     });
     
-    showFunnyPopup('🎊 What a game! You all rock!');
+    showFunnyPopup('What a game! You all rock!');
 }
 
 // Initialize
-showFunnyPopup('🎉 Welcome to Trivia Night!');
+showFunnyPopup('Welcome to Trivia Night!');

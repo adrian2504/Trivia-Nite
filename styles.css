@@ -7,7 +7,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, rgba(230, 235, 255, 0.95) 0%, rgba(240, 230, 255, 0.95) 100%);
     overflow-x: hidden;
 }
 
@@ -43,12 +43,12 @@ body {
 }
 
 .glass-card {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     animation: slideIn 0.5s ease-out;
     margin: 0 auto;
     width: 100%;
@@ -77,10 +77,10 @@ body {
 
 .title {
     font-size: 3rem;
-    color: white;
+    color: #333;
     text-align: center;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
     animation: bounce 1s ease-in-out;
 }
 
@@ -91,7 +91,7 @@ body {
 
 .subtitle {
     font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: #555;
     text-align: center;
     margin-bottom: 40px;
 }
@@ -120,24 +120,25 @@ body {
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.3);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.5);
+    color: #333;
+    border: 2px solid rgba(150, 150, 200, 0.5);
+    font-weight: 600;
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.7);
     transform: translateY(-2px);
 }
 
 .btn-ghost {
     background: transparent;
-    color: white;
-    border: 2px solid white;
+    color: #333;
+    border: 2px solid #333;
 }
 
 .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .welcome-card {
@@ -147,27 +148,28 @@ body {
 
 .setup-section {
     margin: 30px auto;
-    color: white;
+    color: #333;
     max-width: 600px;
 }
 
 .setup-section h3 {
     margin-bottom: 15px;
     font-size: 1.3rem;
+    color: #333;
 }
 
 .setup-section h2 {
-    color: white;
+    color: #333;
     margin-bottom: 20px;
 }
 
 .input-field {
     padding: 12px;
     font-size: 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(150, 150, 200, 0.4);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
     width: 100%;
     max-width: 400px;
     margin: 10px auto;
@@ -175,7 +177,7 @@ body {
 }
 
 .input-field::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(0, 0, 0, 0.4);
 }
 
 .team-form {
@@ -187,7 +189,7 @@ body {
 }
 
 .team-form h4 {
-    color: white;
+    color: #333;
     margin-bottom: 15px;
 }
 
@@ -200,7 +202,7 @@ body {
 }
 
 .team-form-single h3 {
-    color: white;
+    color: #333;
     margin-bottom: 20px;
     font-size: 1.5rem;
 }
@@ -223,7 +225,7 @@ body {
 .checkbox-label {
     display: flex;
     align-items: center;
-    color: white;
+    color: #333;
     font-size: 1.1rem;
     cursor: pointer;
     margin: 15px 0;
@@ -241,39 +243,44 @@ body {
 }
 
 .point-system label {
-    color: white;
+    color: #333;
     display: block;
     margin-bottom: 10px;
 }
 
 .scoreboard {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 20px;
-    gap: 15px;
+    margin-bottom: 30px;
+    gap: 25px;
+    padding: 0 20px;
 }
 
 .score-item {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
-    padding: 15px 25px;
+    padding: 20px 30px;
     border-radius: 15px;
-    color: white;
+    color: #333;
     text-align: center;
-    min-width: 150px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    min-width: 180px;
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .score-item.active {
-    border: 3px solid #ffd700;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    transform: scale(1.05);
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .score-item h4 {
     font-size: 1.1rem;
     margin-bottom: 5px;
+    color: #333;
+    font-weight: 600;
 }
 
 .score-item p {
@@ -289,22 +296,25 @@ body {
 .question-header {
     display: flex;
     justify-content: space-between;
-    color: white;
+    color: #333;
     margin-bottom: 30px;
     font-size: 1.1rem;
+    font-weight: 500;
 }
 
 .team-badge {
     padding: 5px 15px;
     border-radius: 20px;
     font-weight: bold;
+    color: white;
 }
 
 .question-text {
-    color: white;
+    color: #333;
     font-size: 1.8rem;
     margin-bottom: 30px;
     text-align: center;
+    font-weight: 600;
 }
 
 .options-container {
@@ -317,17 +327,19 @@ body {
 .option-btn {
     padding: 20px;
     font-size: 1.1rem;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(150, 150, 200, 0.4);
     border-radius: 10px;
-    color: white;
+    color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .option-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.9);
     transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .option-btn.correct {
@@ -366,13 +378,13 @@ body {
 }
 
 .reveal-content h3 {
-    color: white;
+    color: #333;
     font-size: 2rem;
     margin-bottom: 15px;
 }
 
 .reveal-content p {
-    color: white;
+    color: #333;
     font-size: 1.2rem;
     margin-bottom: 20px;
 }
@@ -387,7 +399,7 @@ body {
 
 .podium-place {
     text-align: center;
-    color: white;
+    color: #333;
     animation: slideUp 0.8s ease-out;
 }
 
@@ -438,12 +450,14 @@ body {
 }
 
 .medal {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
 }
 
 .all-results {
-    color: white;
+    color: #333;
     margin-top: 30px;
 }
 
@@ -484,17 +498,17 @@ body {
 }
 
 .popup-content p {
-    color: white;
+    color: #333;
     font-size: 1.3rem;
     font-weight: bold;
 }
 
 .question-form {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.4);
     padding: 20px;
     border-radius: 10px;
     margin: 15px auto;
-    color: white;
+    color: #333;
     max-width: 600px;
 }
 
@@ -514,7 +528,7 @@ body {
 .footer {
     margin-top: 40px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 0.9rem;
 }
 
@@ -551,15 +565,20 @@ body {
     min-height: 40px;
 }
 
+.players-list p {
+    color: #333;
+}
+
 .player-tag {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.7);
     padding: 8px 15px;
     border-radius: 20px;
-    color: white;
+    color: #333;
     display: inline-flex;
     align-items: center;
     gap: 10px;
     animation: slideIn 0.3s ease-out;
+    border: 1px solid rgba(150, 150, 200, 0.3);
 }
 
 .remove-player-btn {
@@ -586,7 +605,7 @@ body {
 
 .team-players {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.6);
     margin: 5px 0;
     font-style: italic;
 }
