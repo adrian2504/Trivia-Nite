@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Game Night 🎉</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <div class="container" id="app">
+        <!-- Welcome Screen -->
+        <div class="screen active" id="welcome-screen">
+            <div class="glass-card welcome-card">
+                <h1 class="title">🎮 Trivia Game Night 🎉</h1>
+                <p class="subtitle">Get ready for some brain-busting fun!</p>
+                <button class="btn btn-primary" onclick="showScreen('setup-screen')">Start New Game</button>
+                <div class="footer">Designed by Adrian Dsouza</div>
+            </div>
+        </div>
+
+        <!-- Setup Screen -->
+        <div class="screen" id="setup-screen">
+            <div class="glass-card">
+                <h2>📝 Game Setup</h2>
+                <div class="setup-section">
+                    <h3>Questions</h3>
+                    <button class="btn btn-secondary" onclick="showCreateQuestions()">Create Questions</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('file-upload').click()">Import from File</button>
+                    <input type="file" id="file-upload" accept=".json" style="display:none" onchange="handleFileUpload(event)">
+                </div>
+                
+                <div class="setup-section" id="questions-preview" style="display:none">
+                    <p><span id="question-count">0</span> questions loaded ✅</p>
+                </div>
+
+                <div class="setup-section">
+                    <h3>Number of Teams</h3>
+                    <input type="number" id="team-count" min="2" max="10" value="3" class="input-field">
+                    <button class="btn btn-primary" onclick="setupTeams()">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Questions Screen -->
+        <div class="screen" id="create-questions-screen">
+            <div class="glass-card">
+                <h2>✏️ Create Questions</h2>
+                <div id="questions-container"></div>
+                <button class="btn btn-secondary" onclick="addQuestionForm()">+ Add Question</button>
+                <button class="btn btn-primary" onclick="saveQuestions()">Save Questions</button>
+                <button class="btn btn-ghost" onclick="showScreen('setup-screen')">Back</button>
+            </div>
+        </div>
+
+        <!-- Team Setup Screen -->
+        <div class="screen" id="team-setup-screen">
+            <div class="glass-card">
+                <h2>👥 Team Setup</h2>
+                <div id="teams-container"></div>
+                
+                <div class="setup-section">
+                    <h3>⚙️ Game Settings</h3>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="negative-marking">
+                        Enable Negative Marking (-1 for wrong answers)
+                    </label>
+                    <div class="point-system">
+                        <label>Points per correct answer:</label>
+                        <input type="number" id="points-per-question" value="10" min="1" class="input-field">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="startGame()">Start Game! 🚀</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="screen" id="game-screen">
+            <div class="scoreboard">
+                <div id="scoreboard-teams"></div>
+            </div>
+            
+            <div class="glass-card game-card">
+                <div class="question-header">
+                    <span>Question <span id="current-question-num">1</span> of <span id="total-questions">10</span></span>
+                    <span>Current Team: <span id="current-team-name" class="team-badge"></span></span>
+                </div>
+                
+                <h2 id="question-text" class="question-text"></h2>
+                
+                <div id="options-container" class="options-container"></div>
+                
+                <div id="answer-reveal" class="answer-reveal" style="display:none">
+                    <div class="reveal-content">
+                        <h3 id="reveal-title"></h3>
+                        <p id="reveal-text"></p>
+                        <button class="btn btn-primary" onclick="nextQuestion()">Next Question</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="results-screen">
+            <div class="glass-card results-card">
+                <h1>🏆 Final Results 🏆</h1>
+                <div id="podium" class="podium"></div>
+                <div id="all-results" class="all-results"></div>
+                <button class="btn btn-primary" onclick="location.reload()">Play Again</button>
+                <div class="footer">Designed by Adrian Dsouza</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Funny Popup -->
+    <div id="funny-popup" class="funny-popup">
+        <div class="popup-content glass-card">
+            <p id="popup-text"></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
