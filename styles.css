@@ -39,6 +39,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .glass-card {
@@ -49,6 +50,9 @@ body {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     border: 1px solid rgba(255, 255, 255, 0.18);
     animation: slideIn 0.5s ease-out;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 900px;
 }
 
 @keyframes slideIn {
@@ -142,13 +146,19 @@ body {
 }
 
 .setup-section {
-    margin: 30px 0;
+    margin: 30px auto;
     color: white;
+    max-width: 600px;
 }
 
 .setup-section h3 {
     margin-bottom: 15px;
     font-size: 1.3rem;
+}
+
+.setup-section h2 {
+    color: white;
+    margin-bottom: 20px;
 }
 
 .input-field {
@@ -159,8 +169,9 @@ body {
     background: rgba(255, 255, 255, 0.2);
     color: white;
     width: 100%;
-    max-width: 300px;
-    margin: 10px 0;
+    max-width: 400px;
+    margin: 10px auto;
+    display: inline-block;
 }
 
 .input-field::placeholder {
@@ -171,12 +182,34 @@ body {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 10px;
-    margin: 15px 0;
+    margin: 15px auto;
+    max-width: 600px;
 }
 
 .team-form h4 {
     color: white;
     margin-bottom: 15px;
+}
+
+.team-form-single {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+.team-form-single h3 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.team-nav-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
 }
 
 .color-picker {
@@ -460,14 +493,17 @@ body {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 10px;
-    margin: 15px 0;
+    margin: 15px auto;
     color: white;
+    max-width: 600px;
 }
 
 .question-form input,
-.question-form textarea {
+.question-form textarea,
+.question-form select {
     width: 100%;
-    margin: 10px 0;
+    margin: 10px auto;
+    display: block;
 }
 
 .question-form textarea {
@@ -499,4 +535,64 @@ body {
     .podium-place {
         order: unset !important;
     }
+}
+
+
+.player-input-section {
+    margin: 20px 0;
+}
+
+.players-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+    min-height: 40px;
+}
+
+.player-tag {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.remove-player-btn {
+    background: rgba(255, 0, 0, 0.6);
+    border: none;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.remove-player-btn:hover {
+    background: rgba(255, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.team-players {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.team-score {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 5px;
 }

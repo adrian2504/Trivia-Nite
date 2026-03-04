@@ -6,7 +6,9 @@ let gameState = {
     currentTeamIndex: 0,
     pointsPerQuestion: 10,
     negativeMarking: false,
-    selectedAnswer: null
+    selectedAnswer: null,
+    wrongAttempts: 0,
+    attemptedAnswers: []
 };
 
 // Funny messages
@@ -98,10 +100,10 @@ function addQuestionForm() {
             <input type="text" class="input-field option-input" placeholder="Option C" required>
             <input type="text" class="input-field option-input" placeholder="Option D" required>
             <select class="input-field correct-answer-select">
-                <option value="0">Correct Answer: A</option>
-                <option value="1">Correct Answer: B</option>
-                <option value="2">Correct Answer: C</option>
-                <option value="3">Correct Answer: D</option>
+                <option value="0">A</option>
+                <option value="1">B</option>
+                <option value="2">C</option>
+                <option value="3">D</option>
             </select>
         </div>
     `;
@@ -164,6 +166,11 @@ function handleFileUpload(event) {
 }
 
 // Team Setup
+let currentTeamSetupIndex = 0;
+let totalTeamsToSetup = 0;
+let tempTeams = [];
+let currentPlayers = [];
+
 function setupTeams() {
     const teamCount = parseInt(document.getElementById('team-count').value);
     
@@ -177,45 +184,118 @@ function setupTeams() {
         return;
     }
     
-    const container = document.getElementById('teams-container');
-    container.innerHTML = '';
-    
-    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52B788'];
-    
-    for (let i = 0; i < teamCount; i++) {
-        const teamHTML = `
-            <div class="team-form">
-                <h4>Team ${i + 1}</h4>
-                <input type="text" class="input-field team-name" placeholder="Team Name" value="Team ${i + 1}" required>
-                <input type="text" class="input-field team-players" placeholder="Player names (comma separated)">
-                <label style="color: white; display: block; margin: 10px 0;">Team Color:</label>
-                <input type="color" class="color-picker team-color" value="${colors[i % colors.length]}">
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', teamHTML);
-    }
+    totalTeamsToSetup = teamCount;
+    currentTeamSetupIndex = 0;
+    tempTeams = [];
     
     showScreen('team-setup-screen');
+    displayTeamSetupForm();
     showFunnyPopup(getRandomMessage(funnyMessages));
 }
 
-// Start Game
-function startGame() {
-    const teamForms = document.querySelectorAll('.team-form');
-    gameState.teams = [];
+function displayTeamSetupForm() {
+    const container = document.getElementById('teams-container');
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52B788'];
     
-    teamForms.forEach(form => {
-        const name = form.querySelector('.team-name').value;
-        const players = form.querySelector('.team-players').value.split(',').map(p => p.trim()).filter(p => p);
-        const color = form.querySelector('.team-color').value;
-        
-        gameState.teams.push({
-            name: name,
-            players: players,
-            color: color,
-            score: 0
-        });
+    // Load existing players if going back
+    if (tempTeams[currentTeamSetupIndex]) {
+        currentPlayers = [...tempTeams[currentTeamSetupIndex].players];
+    } else {
+        currentPlayers = [];
+    }
+    
+    container.innerHTML = `
+        <div class="team-form-single">
+            <h3>Team ${currentTeamSetupIndex + 1} of ${totalTeamsToSetup}</h3>
+            <input type="text" id="current-team-name" class="input-field" placeholder="Team Name" value="${tempTeams[currentTeamSetupIndex]?.name || 'Team ' + (currentTeamSetupIndex + 1)}" required>
+            
+            <div class="player-input-section">
+                <label style="color: white; display: block; margin: 15px 0 10px 0;">Add Players:</label>
+                <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                    <input type="text" id="player-name-input" class="input-field" placeholder="Player name" style="max-width: 300px;">
+                    <button class="btn btn-secondary" onclick="addPlayer()" style="margin: 0;">+ Add</button>
+                </div>
+                <div id="players-list" class="players-list"></div>
+            </div>
+            
+            <label style="color: white; display: block; margin: 20px 0 10px 0;">Team Color:</label>
+            <input type="color" id="current-team-color" class="color-picker" value="${tempTeams[currentTeamSetupIndex]?.color || colors[currentTeamSetupIndex % colors.length]}">
+            
+            <div class="team-nav-buttons">
+                ${currentTeamSetupIndex > 0 ? '<button class="btn btn-secondary" onclick="previousTeam()">← Previous</button>' : ''}
+                ${currentTeamSetupIndex < totalTeamsToSetup - 1 ? '<button class="btn btn-primary" onclick="nextTeam()">Next →</button>' : '<button class="btn btn-primary" onclick="finishTeamSetup()">Finish Setup</button>'}
+            </div>
+        </div>
+    `;
+    
+    updatePlayersList();
+    
+    // Add enter key support
+    document.getElementById('player-name-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addPlayer();
+        }
     });
+}
+
+function addPlayer() {
+    const input = document.getElementById('player-name-input');
+    const playerName = input.value.trim();
+    
+    if (playerName) {
+        currentPlayers.push(playerName);
+        input.value = '';
+        updatePlayersList();
+    }
+}
+
+function removePlayer(index) {
+    currentPlayers.splice(index, 1);
+    updatePlayersList();
+}
+
+function updatePlayersList() {
+    const container = document.getElementById('players-list');
+    
+    if (currentPlayers.length === 0) {
+        container.innerHTML = '<p style="color: rgba(255,255,255,0.6); margin-top: 10px;">No players added yet</p>';
+    } else {
+        container.innerHTML = currentPlayers.map((player, index) => `
+            <div class="player-tag">
+                <span>${player}</span>
+                <button onclick="removePlayer(${index})" class="remove-player-btn">×</button>
+            </div>
+        `).join('');
+    }
+}
+
+function nextTeam() {
+    saveCurrentTeam();
+    currentTeamSetupIndex++;
+    displayTeamSetupForm();
+}
+
+function previousTeam() {
+    saveCurrentTeam();
+    currentTeamSetupIndex--;
+    displayTeamSetupForm();
+}
+
+function saveCurrentTeam() {
+    const name = document.getElementById('current-team-name').value;
+    const color = document.getElementById('current-team-color').value;
+    
+    tempTeams[currentTeamSetupIndex] = {
+        name: name,
+        players: [...currentPlayers],
+        color: color,
+        score: 0
+    };
+}
+
+function finishTeamSetup() {
+    saveCurrentTeam();
+    gameState.teams = tempTeams;
     
     gameState.pointsPerQuestion = parseInt(document.getElementById('points-per-question').value);
     gameState.negativeMarking = document.getElementById('negative-marking').checked;
@@ -228,6 +308,8 @@ function startGame() {
     showFunnyPopup('🎮 Game on! Let the battle begin!');
 }
 
+
+
 // Game Logic
 function updateScoreboard() {
     const container = document.getElementById('scoreboard-teams');
@@ -235,10 +317,12 @@ function updateScoreboard() {
     
     gameState.teams.forEach((team, index) => {
         const isActive = index === gameState.currentTeamIndex;
+        const playersText = team.players.length > 0 ? `<p class="team-players">${team.players.join(', ')}</p>` : '';
         const scoreHTML = `
             <div class="score-item ${isActive ? 'active' : ''}" style="border-color: ${team.color}">
                 <h4>${team.name}</h4>
-                <p>${team.score}</p>
+                ${playersText}
+                <p class="team-score">${team.score}</p>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', scoreHTML);
@@ -267,54 +351,84 @@ function displayQuestion() {
     
     document.getElementById('answer-reveal').style.display = 'none';
     gameState.selectedAnswer = null;
+    gameState.wrongAttempts = 0;
+    gameState.attemptedAnswers = [];
 }
 
 function selectAnswer(answerIndex) {
-    if (gameState.selectedAnswer !== null) return;
+    if (gameState.attemptedAnswers.includes(answerIndex)) return;
     
-    gameState.selectedAnswer = answerIndex;
     const question = gameState.questions[gameState.currentQuestionIndex];
     const isCorrect = answerIndex === question.correctAnswer;
     
-    const optionButtons = document.querySelectorAll('.option-btn');
-    optionButtons.forEach((btn, index) => {
-        btn.disabled = true;
-        if (index === question.correctAnswer) {
-            btn.classList.add('correct');
-        } else if (index === answerIndex && !isCorrect) {
-            btn.classList.add('incorrect');
-        }
-    });
+    gameState.attemptedAnswers.push(answerIndex);
     
-    // Update score
+    // Disable the clicked button
+    const optionButtons = document.querySelectorAll('.option-btn');
+    optionButtons[answerIndex].disabled = true;
+    optionButtons[answerIndex].style.opacity = '0.5';
+    
     if (isCorrect) {
+        // Correct answer - show it and move on
         gameState.teams[gameState.currentTeamIndex].score += gameState.pointsPerQuestion;
         showFunnyPopup(getRandomMessage(correctAnswerMessages));
-    } else {
-        if (gameState.negativeMarking) {
-            gameState.teams[gameState.currentTeamIndex].score -= 1;
-        }
-        showFunnyPopup(getRandomMessage(wrongAnswerMessages));
-    }
-    
-    updateScoreboard();
-    
-    // Show reveal
-    setTimeout(() => {
-        const revealTitle = document.getElementById('reveal-title');
-        const revealText = document.getElementById('reveal-text');
         
-        if (isCorrect) {
+        // Highlight correct answer
+        optionButtons[question.correctAnswer].classList.add('correct');
+        
+        updateScoreboard();
+        
+        // Show reveal and move to next question
+        setTimeout(() => {
+            const revealTitle = document.getElementById('reveal-title');
+            const revealText = document.getElementById('reveal-text');
+            
             revealTitle.textContent = '✅ Correct!';
             revealTitle.style.color = '#4caf50';
-        } else {
-            revealTitle.textContent = '❌ Wrong!';
-            revealTitle.style.color = '#f44336';
-        }
+            revealText.textContent = `The correct answer is: ${question.options[question.correctAnswer]}`;
+            document.getElementById('answer-reveal').style.display = 'block';
+            
+            setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+        }, 800);
         
-        revealText.textContent = `The correct answer is: ${question.options[question.correctAnswer]}`;
-        document.getElementById('answer-reveal').style.display = 'block';
-    }, 1500);
+    } else {
+        // Wrong answer
+        gameState.wrongAttempts++;
+        
+        if (gameState.wrongAttempts >= 2) {
+            // Two wrong attempts - reveal answer and move on
+            if (gameState.negativeMarking) {
+                gameState.teams[gameState.currentTeamIndex].score -= 1;
+            }
+            showFunnyPopup(getRandomMessage(wrongAnswerMessages));
+            
+            // Show correct answer
+            optionButtons[question.correctAnswer].classList.add('correct');
+            // Show wrong attempts
+            gameState.attemptedAnswers.forEach(idx => {
+                if (idx !== question.correctAnswer) {
+                    optionButtons[idx].classList.add('incorrect');
+                }
+            });
+            
+            updateScoreboard();
+            
+            setTimeout(() => {
+                const revealTitle = document.getElementById('reveal-title');
+                const revealText = document.getElementById('reveal-text');
+                
+                revealTitle.textContent = '❌ Wrong!';
+                revealTitle.style.color = '#f44336';
+                revealText.textContent = `The correct answer is: ${question.options[question.correctAnswer]}`;
+                document.getElementById('answer-reveal').style.display = 'block';
+            }, 800);
+        } else {
+            // First wrong attempt - let them try again
+            showFunnyPopup('🤔 Try again! One more chance!');
+        }
+    }
 }
 
 function nextQuestion() {
